@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="NOTE: HTTP version 2 (HTTP&#x2F;2) works differently. For HTTP&#x2F;2 see: HTTP&#x2F;2 Distilled (work in progress…) Every time we use Google to search for something, or play our favorite song on Youtube, we are usi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HTTP Distilled">
+<meta property="og:url" content="https://snajdov.me/posts/HTTP-Distilled/index.html">
+<meta property="og:site_name" content="snajdov.me">
+<meta property="og:description" content="NOTE: HTTP version 2 (HTTP&#x2F;2) works differently. For HTTP&#x2F;2 see: HTTP&#x2F;2 Distilled (work in progress…) Every time we use Google to search for something, or play our favorite song on Youtube, we are usi">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://snajdov.me/images/HTTP-Distilled/browser-response.png">
+<meta property="og:image" content="https://snajdov.me/images/HTTP-Distilled/browser-dev-tools.png">
+<meta property="og:image" content="https://snajdov.me/images/HTTP-Distilled/wireshark.png">
+<meta property="article:published_time" content="2020-04-14T20:21:51.000Z">
+<meta property="article:modified_time" content="2020-11-12T21:57:53.823Z">
+<meta property="article:author" content="Sasho Najdov">
+<meta property="article:tag" content="client">
+<meta property="article:tag" content="server">
+<meta property="article:tag" content="http">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://snajdov.me/images/HTTP-Distilled/browser-response.png">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>HTTP Distilled</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://snajdov.me/posts/HTTP-Distilled/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://snajdov.me/posts/HTTP-Distilled/&text=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://snajdov.me/posts/HTTP-Distilled/&is_video=false&description=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTTP Distilled&body=Check out this article: https://snajdov.me/posts/HTTP-Distilled/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://snajdov.me/posts/HTTP-Distilled/&name=HTTP Distilled&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://snajdov.me/posts/HTTP-Distilled/&t=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basics"><span class="toc-number">1.</span> <span class="toc-text">Basics</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-Request"><span class="toc-number">2.</span> <span class="toc-text">HTTP Request</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Verbs-Methods"><span class="toc-number">2.1.</span> <span class="toc-text">Verbs &#x2F; Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Resource"><span class="toc-number">2.2.</span> <span class="toc-text">Resource</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Query-String"><span class="toc-number">2.3.</span> <span class="toc-text">Query String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fragment"><span class="toc-number">2.4.</span> <span class="toc-text">Fragment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Headers"><span class="toc-number">2.5.</span> <span class="toc-text">Headers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Body"><span class="toc-number">2.6.</span> <span class="toc-text">Body</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-Response"><span class="toc-number">3.</span> <span class="toc-text">HTTP Response</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Status-Codes"><span class="toc-number">3.1.</span> <span class="toc-text">Status Codes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Using-cURL"><span class="toc-number">4.</span> <span class="toc-text">Example: Using cURL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Using-Telnet"><span class="toc-number">5.</span> <span class="toc-text">Example: Using Telnet</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Inspecting-HTTP-using-DevTools"><span class="toc-number">6.</span> <span class="toc-text">Example: Inspecting HTTP using DevTools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Inspecting-HTTP-using-Wireshark"><span class="toc-number">7.</span> <span class="toc-text">Example: Inspecting HTTP using Wireshark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-number">8.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Resources"><span class="toc-number">9.</span> <span class="toc-text">Resources</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        HTTP Distilled
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">snajdov.me</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-14T20:21:51.000Z" itemprop="datePublished">2020-04-14</time>
+        
+        (Updated: <time datetime="2020-11-12T21:57:53.823Z" itemprop="dateModified">2020-11-12</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/networking/">networking</a> › <a class="category-link" href="/categories/networking/protocols/">protocols</a> › <a class="category-link" href="/categories/networking/protocols/http/">http</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/client/" rel="tag">client</a>, <a class="tag-link" href="/tags/http/" rel="tag">http</a>, <a class="tag-link" href="/tags/server/" rel="tag">server</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p><strong>NOTE</strong>: HTTP version 2 (HTTP/2) works differently. For HTTP/2 see: <a href="/posts/HTTP-2-Distilled">HTTP/2 Distilled</a> (work in progress…)</p>
+<p>Every time we use Google to search for something, or play our favorite song on Youtube, we are using HTTP. It stands for HyperText Transfer Protocol, and it powers the whole World Wide Web.</p>
+<h2 id="Basics"><a href="#Basics" class="headerlink" title="Basics"></a>Basics</h2><p>Let’s say we typed “<a href="http://www.google.com&quot;" target="_blank" rel="noopener">www.google.com&quot;</a> in our browser. When we hit <code>enter</code>, something happens, and we’re presented the Google homepage.<br><strong>So, what does happen?</strong></p>
+<p>More or less, the following:</p>
+<ol>
+<li>Our browser (Firefox, Chrome, …), acting as a <strong>Client</strong>, generates a new <strong>HTTP Request</strong>.</li>
+<li>That request, using TCP is sent to the <strong>Server</strong>.</li>
+<li>The <strong>Server</strong> reads the request, does some processing, generates a result, and stores it in an <strong>HTTP Response</strong>.</li>
+<li>That response is sent back to the <strong>Client</strong> using TCP.</li>
+<li>The <strong>Client</strong> (our browser) reads the response, and generates the view we are seeing.</li>
+</ol>
+<p>From above, we can identify two participants in the communication:</p>
+<ol>
+<li><strong>The Client</strong>: requests resources</li>
+<li><strong>The Server</strong>: serves resources</li>
+</ol>
+<p>as well as, two types of HTTP messages:</p>
+<ol>
+<li><strong>HTTP Request</strong>: contains information on the resource the client wants</li>
+<li><strong>HTTP Response</strong>: contains the resource returned from the server</li>
+</ol>
+<p>Following is a diagram showing the flow of information:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">┌────────┐                   ┌────────┐ # the client sends a request</span><br><span class="line">│ Client ├───HTTP Request───&gt;│ Server │ # to the server</span><br><span class="line">└────────┘                   └───┬────┘</span><br><span class="line">                                 │</span><br><span class="line">                              process   # that request gets processed</span><br><span class="line">                              request</span><br><span class="line">                                 │</span><br><span class="line">┌────────┐                   ┌───┴────┐ # the result is sent back</span><br><span class="line">│ Client │&lt;──HTTP Response───┤ Server │ # to the client</span><br><span class="line">└────────┘                   └────────┘</span><br></pre></td></tr></table></figure>
+
+<h2 id="HTTP-Request"><a href="#HTTP-Request" class="headerlink" title="HTTP Request"></a>HTTP Request</h2><p>Let’s focus on the first part: after you hit <code>enter</code>, but before the request gets sent out (step 1 above).<br>In the address bar we typed “<a href="http://www.google.com&quot;" target="_blank" rel="noopener">www.google.com&quot;</a>, with that a request similar to this one is generated (by the browser):</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: www.google.com</span><br><span class="line"><span class="attribute">Cache-Control</span>: no-cache</span><br><span class="line"><span class="attribute">User-Agent</span>: Firefox</span><br></pre></td></tr></table></figure>
+
+<p>We can see that the first line contains a “GET” called <strong>verb/method</strong>, indicating our intended action, a “/“ specifying the location of the requested target, called <strong>resource/request target</strong>. Since we didn’t specify a particular path within the domain, so it defaulted to root.<br>The next lines are <strong>key: value</strong> pairs called <strong>headers</strong>, containing additional information for the server. “Host” holds the domain name, “User-Agent” the browser used, etc… There are many more standardized headers, but we can add our own custom headers, as well.<br>Finally, <strong>one blank line</strong> is used to indicate the end.</p>
+<p>In general, the structure of an HTTP Request is:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">verb      resource          query string        fragment   version</span><br><span class="line">┌┴─┐ ┌───────┴───────┐ ┌─────────┴───────────┐ ┌────┴────┐ ┌──┴───┐</span><br><span class="line"><span class="keyword">VERB</span> <span class="string">/path/to/resource?key1=value1&amp;key2=value2#fragment-id</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Header-Name1</span>: Value 1 ┐</span><br><span class="line"><span class="attribute">Header-Name2</span>: Value 2 ├ headers</span><br><span class="line"><span class="attribute">Header-Name3</span>: Value 3 ┘</span><br><span class="line">(empty line)</span><br><span class="line">(optional body starts here)</span><br></pre></td></tr></table></figure>
+
+<p>Let’s explain them, one-by-one.</p>
+<h3 id="Verbs-Methods"><a href="#Verbs-Methods" class="headerlink" title="Verbs / Methods"></a>Verbs / Methods</h3><p>We need a mechanism to tell the server our intentions. Do we want to get something from the server, or do we want to upload something to it? Maybe edit/delete something? For that, there is a reserved HTTP <strong>Verb</strong> or <strong>Method</strong> field that every HTTP Request starts with.<br>These are words that define the type of <strong>Client action</strong>. It can be one of:</p>
+<ul>
+<li><strong>GET</strong>: Retrieve a resource</li>
+<li><strong>POST</strong>: Upload to a resource</li>
+<li><strong>PUT</strong>: Update a resource</li>
+<li><strong>PATCH</strong>: Partially update a resource</li>
+<li><strong>DELETE</strong>: Delete a resource</li>
+<li><strong>HEAD</strong>: Get only meta information (GET with no body)</li>
+<li><strong>OPTIONS</strong>: Check the communication options of the server</li>
+<li><strong>TRACE</strong>: Perform a message loop-back test</li>
+<li><strong>CONNECT</strong>: Establish a connection with the specified resource</li>
+</ul>
+<p>More on these, here: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods</a></p>
+<h3 id="Resource"><a href="#Resource" class="headerlink" title="Resource"></a>Resource</h3><p>Next, we define the <strong>Resource</strong> we want to act upon. Typically, the resource is specified in the form: “/Path/To/Resource”. This is similar to navigating a file-system in Linux. But, it can be a whole URL, as well. With that, the resource behind the specified path or URL can be a file from a file system, or it can be some function performing some business logic.</p>
+<p>For example, we can say:</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/movies</span> HTTP/1.1</span><br></pre></td></tr></table></figure>
+<p>and if the <strong>Server</strong> knows (is programmed to) to fetch movies on <strong>GET</strong>s on the resource <strong>/Movies</strong>, then we should get a list of movies.</p>
+<h3 id="Query-String"><a href="#Query-String" class="headerlink" title="Query String"></a>Query String</h3><p>Represents a secondary specifier on the <strong>requested resource</strong>, especially if the resource is some collection. It takes the form of a “key=value” array. Starts after the <strong>resource</strong>, preceded by a question mark (?). If you want to specify multiple “key=value” pairs, you can use the ampersand sign (&amp;) to separate them.<br><strong>NOTE</strong>: This is optional, and can be omitted.</p>
+<p>Continuing on the previous example, we could say:</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/movies?genre=comedy&amp;order=year&amp;limit=10</span> HTTP/1.1</span><br></pre></td></tr></table></figure>
+<p>to tell the <strong>Server</strong> to filter out all comedy movies, order them by year, a retreive the first 10. Again, given that the server provides that functionality and expects these query parameters.</p>
+<h3 id="Fragment"><a href="#Fragment" class="headerlink" title="Fragment"></a>Fragment</h3><p>Gives us the ability to again specify and filter on the <strong>returned resource</strong> (the previous was on the requested resource). In other words, when the resource we requested was returned to us, we can automatically navigate to a specific sub-part of it. The fragment does NOT travel to the <strong>Server</strong>, its used by the <strong>Client</strong> only.<br><strong>NOTE</strong>: This is optional, and can be omitted.</p>
+<p>Using the example from previously, if we do:</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">GET</span> <span class="string">/movies?genre=comedy&amp;order=year&amp;limit=10#cast</span> HTTP/1.1</span><br></pre></td></tr></table></figure>
+
+<p>(the <code>#cast</code> part is not actually sent to the <strong>Server</strong>, only the <strong>Client</strong> uses it)<br>it would be the same as previously, but now when the page is loaded, we are shown the cast of the movies because the fragment is set to <strong>cast</strong>, given that the <strong>Client</strong> knows what to do with the fragment.<br>Unlike the <strong>Resource</strong> and <strong>Query String</strong>, the <strong>Fragment</strong> is for the <strong>Client</strong>, and the code running on the user’s machine should know how to handle this.</p>
+<h3 id="Headers"><a href="#Headers" class="headerlink" title="Headers"></a>Headers</h3><p>Now we come to the interesting part: <strong>Headers</strong>.</p>
+<p>Up until know, we learned how to specify our actions (verb/method), the resource we want to act upon (resource), apply additional filters to the resource (query string), and even specify how to show the returned data (fragment).<br>So, what is there left to do? <strong>A lot!</strong></p>
+<p>Headers are <strong>case insensitive</strong> key/value pairs. With the <strong>Headers</strong> we talk directly to the <strong>Server</strong>. We can say to it:</p>
+<ul>
+<li>I’m a Firefox user<br><strong>User-Agent: Firefox</strong> (this is simplified, it’s a lot longer)</li>
+<li>I can understand HTML and JSON formats<br><strong>Accept: text/html,application/json;q=0.9</strong></li>
+<li>I am sending you JSON formated data<br><strong>Content-Type: application/json</strong></li>
+<li>The website I request is snajdov.me<br><strong>Host: snajdov.me</strong><br><strong>NOTE</strong>: one server can server many websites, i.e. domains</li>
+<li>I don’t want you to track me<br><strong>DNT: 1</strong></li>
+<li>I have some information you gave me, from the last time we communicated<br><strong>Cookie: X=some-cookie-data</strong></li>
+<li>Don’t close this TCP connection<br><strong>Connection: keep-alive</strong></li>
+<li><strong>and many more…</strong><br><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers</a></li>
+</ul>
+<p>As we can see, the posibilities are endless. <strong>Headers</strong> give meaning to the communicated data, and change the behaviour of the applications. We can define our own custom headers for our applications, for an even richer experience.</p>
+<h3 id="Body"><a href="#Body" class="headerlink" title="Body"></a>Body</h3><p>Lastly, we are given the opportunity to send something to the <strong>Server</strong>. The <strong>Body</strong> is where all our data goes. It is anything after <strong>the blank line</strong>. Usually the <strong>Body</strong> is only present in <strong>POST</strong>s, <strong>PUT</strong>s and <strong>PATCH</strong>es, since the other <strong>Methods</strong> are not meant for uploading data.<br><strong>NOTE</strong>: By usually I mean: you can send the Body even in GET, but it’s up to the <strong>Server</strong> to decide whether it’ll parse the body.</p>
+<p>An example where we register on some website:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/register</span> HTTP/1.1</span><br><span class="line"><span class="attribute">Host</span>: snajdov.me</span><br><span class="line"><span class="attribute">User-Agent</span>: Firefox</span><br><span class="line"><span class="attribute">Content-Type</span>: application/json</span><br><span class="line"><span class="attribute">Content-Length</span>: 64</span><br><span class="line"></span><br><span class="line">&#123;"username": "snajdov", "password": "iHopeItsASecurePassword:)"&#125;</span><br></pre></td></tr></table></figure>
+
+<p>We told the <strong>Server</strong> everything it needed to know:</p>
+<ul>
+<li>We send you data (POST)</li>
+<li>It’s for registration (/register)</li>
+<li>We’re using version 1.1 of the protocol (HTTP/1.1)</li>
+<li>It’s for the domain snajdov.me (Host: snajdov.me)</li>
+<li>We’re using Firefox (Host: Firefox)</li>
+<li>We’re sending you JSON data (Content-Type: application/json)</li>
+<li>It’s 64 bytes long (Content-Length: 64)</li>
+<li>…and then the data. SIMPLE! :)</li>
+</ul>
+<p>Now the <strong>Server</strong> has all the info needed to process this request, and do its job. It can fetch files, store information in databases, or communicate with other servers. When everything’s done, it can start creating the <strong>HTTP Response</strong>.</p>
+<p>Take a breath, we’re going back! :)</p>
+<h2 id="HTTP-Response"><a href="#HTTP-Response" class="headerlink" title="HTTP Response"></a>HTTP Response</h2><p>Now that everything’s done, the <strong>Server</strong> can build the <strong>HTTP Response</strong> to send it back to us. The <strong>good</strong> thing about it is: it’s almost the same as the <strong>HTTP Request</strong>. Hurray!</p>
+<p>Here’s an example response, if our previous registration attempt was okay:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 <span class="number">201</span> CREATED</span><br><span class="line"><span class="attribute">Date</span>: Fri, 17 Apr 2020 23:10:00 GMT</span><br><span class="line"><span class="attribute">Connection</span>: close</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html</span><br><span class="line"></span><br><span class="line">&lt;h1&gt;Registration successful!&lt;/h1&gt;</span><br></pre></td></tr></table></figure>
+
+<p>We see that the first line is different, but from there onwards, it’s exactly the same as the request. <strong>So, what new?</strong></p>
+<p>In general, the structure of an <strong>HTTP Response</strong> is:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">version      status</span><br><span class="line">┌──┴───┐ ┌─────┴─────┐</span><br><span class="line">HTTP/1.1 <span class="number">404</span> NOT FOUND</span><br><span class="line"><span class="attribute">X-Powered-By</span>: nginx                 ┐</span><br><span class="line"><span class="attribute">Content-Type</span>: text/html             ├ headers</span><br><span class="line"><span class="attribute">Date</span>: Tue, 17 Apr 2020 23:14:00 GMT │</span><br><span class="line"><span class="attribute">Connection</span>: keep-alive              ┘</span><br><span class="line"></span><br><span class="line">&lt;html&gt;                      ┐</span><br><span class="line">&lt;body&gt;                      │</span><br><span class="line">  &lt;h1&gt;No movies found!&lt;/h1&gt; ├ body</span><br><span class="line">&lt;/body&gt;                     │</span><br><span class="line">&lt;/html&gt;                     ┘</span><br></pre></td></tr></table></figure>
+
+<p>i.e., the <strong>Version</strong> is the first thing now, and there is a <strong>Status</strong> indicating the result of the request.</p>
+<h3 id="Status-Codes"><a href="#Status-Codes" class="headerlink" title="Status Codes"></a>Status Codes</h3><p>It’s obvious that not every request can be successfully served. We may send the wrong stuff or the wrong format, the requested resource may be missing, the server may have lost connection to other systems, or other systems will take over this connection. Because of this, status codes are divided into five classes. Here are some of the often used status codes, and their meanings:</p>
+<ol>
+<li>1XX - Informational responses<ul>
+<li>101 SWTICHING PROTOCOLS</li>
+<li>…</li>
+</ul>
+</li>
+<li>2XX - Successful responses<ul>
+<li>200 OK</li>
+<li>201 CREATED</li>
+<li>202 ACCEPTED</li>
+<li>…</li>
+</ul>
+</li>
+<li>3XX - Redirects<ul>
+<li>301 PERMANENT REDIRECT</li>
+<li>302 FOUND</li>
+<li>…</li>
+</ul>
+</li>
+<li>4XX - Client errors<ul>
+<li>400 BAD REQUEST</li>
+<li>401 UNAUTHORIZED</li>
+<li>403 FORBIDDEN</li>
+<li>404 NOT FOUND</li>
+<li>…</li>
+</ul>
+</li>
+<li>5XX - Server errors<ul>
+<li>500 INTERNAL SERVER ERROR</li>
+<li>502 BAD GATWAY</li>
+<li>503 SERVICE UNAVAILABLE</li>
+<li>…</li>
+</ul>
+</li>
+</ol>
+<p>More on this, here: <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Status" target="_blank" rel="noopener">https://developer.mozilla.org/en-US/docs/Web/HTTP/Status</a></p>
+<p>When returned to the <strong>Client</strong>, these <strong>status codes</strong> tell us what happened on the <strong>Server</strong>-side. Depending on the code, we should act accordingly.<br>Despite the statuses, everything else in the <strong>Response</strong> is the same as the <strong>Request</strong>.</p>
+<p>And with that, the whole communication is complete! :)</p>
+<h2 id="Example-Using-cURL"><a href="#Example-Using-cURL" class="headerlink" title="Example: Using cURL"></a>Example: Using cURL</h2><p>One of the most widely used CLI clients is <strong>cURL</strong> (<a href="https://curl.haxx.se/docs/manpage.html" target="_blank" rel="noopener">https://curl.haxx.se/docs/manpage.html</a>). It provides a convenient way of generating HTTP Requests, and is often used in shell scripts to automate something.</p>
+<p>Let’s try to figure out what happened here:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v http://snajdov.me</span><br><span class="line">*   Trying 18.194.76.60:80...</span><br><span class="line">* Connected to snajdov.me (18.194.76.60) port 80 (<span class="comment">#0)</span></span><br><span class="line">&gt; GET / HTTP/1.1</span><br><span class="line">&gt; Host: snajdov.me</span><br><span class="line">&gt; User-Agent: curl/7.69.1</span><br><span class="line">&gt; Accept: */*</span><br><span class="line">&gt; </span><br><span class="line">* Mark bundle as not supporting multiuse</span><br><span class="line">&lt; HTTP/1.1 302 Found</span><br><span class="line">&lt; Location: https://snajdov.me/</span><br><span class="line">&lt; Date: Fri, 17 Apr 2020 22:36:36 GMT</span><br><span class="line">&lt; Content-Length: 5</span><br><span class="line">&lt; Content-Type: text/plain; charset=utf-8</span><br><span class="line">&lt; </span><br><span class="line">* Connection <span class="comment">#0 to host snajdov.me left intact</span></span><br><span class="line">Found</span><br></pre></td></tr></table></figure>
+
+<p>We sent a request to “<a href="http://snajdov.me&quot;" target="_blank" rel="noopener">http://snajdov.me&quot;</a> on port “80”, for the resource “/“ since we didn’t specify anything, and <strong>cURL</strong> filled in automatically some headers like “User-Agent” and “Accept”.<br>The response had a status of “302” which is a redirect, and the “Location” header was populated with “<a href="https://snajdov.me&quot;" target="_blank" rel="noopener">https://snajdov.me&quot;</a>, i.e. it told us to use “HTTPS” (secure HTTP) instead of “HTTP” (I have this setup for security reasons). There are some other headers as well, and the body with value “Found”.</p>
+<p>What if we sent a “POST” request to the resource “/register”, with some credentials in “JSON” format?</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">$ curl -v -X POST \</span><br><span class="line">&gt; -H <span class="string">'Content-Type: application/json'</span> \</span><br><span class="line">&gt; --data <span class="string">'&#123;"username": "snajdov", "password": "iHopeThisIsASecurePassword:)"&#125;'</span> \</span><br><span class="line">&gt; https://snajdov.me/register</span><br><span class="line">...</span><br><span class="line"><span class="comment"># TLS Setup redacted for brevity</span></span><br><span class="line">...</span><br><span class="line">&gt; POST /register HTTP/2</span><br><span class="line">&gt; Host: snajdov.me</span><br><span class="line">&gt; user-agent: curl/7.69.1</span><br><span class="line">&gt; accept: */*</span><br><span class="line">&gt; content-type: application/json</span><br><span class="line">&gt; content-length: 67</span><br><span class="line">&gt; </span><br><span class="line">...</span><br><span class="line"><span class="comment"># TLS Setup redacted for brevity</span></span><br><span class="line">...</span><br><span class="line">&lt; HTTP/2 401 </span><br><span class="line">&lt; content-type: text/plain</span><br><span class="line">&lt; www-authenticate: Basic realm=<span class="string">"traefik"</span></span><br><span class="line">&lt; content-length: 17</span><br><span class="line">&lt; date: Fri, 17 Apr 2020 22:47:43 GMT</span><br><span class="line">&lt; </span><br><span class="line">401 Unauthorized</span><br><span class="line">* Connection <span class="comment">#0 to host snajdov.me left intact</span></span><br></pre></td></tr></table></figure>
+
+<p>We see that cURL now used HTTP version 2, which you can read more about it here: <a href="/posts/HTTP-2-Distilled">HTTP/2 Distilled</a>, and we were returned a 401 status, because as of this writing, the server needs to authenticate us for any request.</p>
+<h2 id="Example-Using-Telnet"><a href="#Example-Using-Telnet" class="headerlink" title="Example: Using Telnet"></a>Example: Using Telnet</h2><p>There is one other tool that we can use in the shell: <strong>telnet</strong>. Namely, this tool establishes a TCP connection with an HTTP Server, and gives us the opportunity to write our own header manually.</p>
+<p>Let’s say we want to see what Google will return for a simple “GET /“:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">$ telnet www.google.com 80</span><br><span class="line">Trying 172.217.169.196...</span><br><span class="line">Connected to www.google.com.</span><br><span class="line">Escape character is <span class="string">'^]'</span>.</span><br><span class="line">GET / HTTP/1.1</span><br><span class="line">Host: www.google.com</span><br><span class="line">Connection: close</span><br><span class="line"></span><br><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Fri, 17 Apr 2020 23:03:59 GMT</span><br><span class="line">Expires: -1</span><br><span class="line">Cache-Control: private, max-age=0</span><br><span class="line">Content-Type: text/html; charset=ISO-8859-1</span><br><span class="line">P3P: CP=<span class="string">"This is not a P3P policy! See g.co/p3phelp for more info."</span></span><br><span class="line">Server: gws</span><br><span class="line">X-XSS-Protection: 0</span><br><span class="line">X-Frame-Options: SAMEORIGIN</span><br><span class="line">Set-Cookie: 1P_JAR=2020-04-17-23; expires=Sun, 17-May-2020 23:03:59 GMT; path=/; domain=.google.com; Secure</span><br><span class="line">Set-Cookie: NID=202=UcuhAsp6vMl3zh2yUqp029IyaZua28GYvChFHdEAmy-AKtzZ-8jfPwiddIXy9gUlNVru4Ol-IkergK_eC7Aq5GoNhxw9F-WOVRY2MejcqLRbu0DwiNdzuJ_5SqjlgR-IUJfIPYem1v47xGbFbNJMJToF5xVbunu9ifUzY-y4SA8; expires=Sat, 17-Oct-2020 23:03:59 GMT; path=/; domain=.google.com; HttpOnly</span><br><span class="line">Accept-Ranges: none</span><br><span class="line">Vary: Accept-Encoding</span><br><span class="line">Connection: close</span><br><span class="line">Transfer-Encoding: chunked</span><br><span class="line"></span><br><span class="line">(Very large body containing the code <span class="keyword">for</span> the Google homepage)</span><br><span class="line">Connection closed by foreign host.</span><br></pre></td></tr></table></figure>
+
+<p>The command says: connect to “<a href="http://www.google.com&quot;" target="_blank" rel="noopener">www.google.com&quot;</a> on port “80”. Once the TCP connection is established, we can write our request. Here, we simply requested “/“, and told the server to close the connection once it served the response. Google sent us some headers and a very large body containing the code for the homepage.</p>
+<h2 id="Example-Inspecting-HTTP-using-DevTools"><a href="#Example-Inspecting-HTTP-using-DevTools" class="headerlink" title="Example: Inspecting HTTP using DevTools"></a>Example: Inspecting HTTP using DevTools</h2><p>I’ve written the following code in NodeJS with the ExpressJS library:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">'express'</span>); <span class="comment">// get Express</span></span><br><span class="line"><span class="keyword">const</span> app = express(); <span class="comment">// initialize a new Express App</span></span><br><span class="line"></span><br><span class="line">app.get(<span class="string">'/hi'</span>, <span class="keyword">async</span> (req, res) =&gt; &#123; <span class="comment">// on HTTP GETs, on the Resource '/hi', run this async function</span></span><br><span class="line">    res.status(<span class="number">200</span>).json(&#123;<span class="string">'message'</span>: <span class="string">'Hello World'</span>&#125;); <span class="comment">// return Status: 200 OK, Header: Content-Type: application/json, and Body: &#123;'message': 'Hello World'&#125;</span></span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">8080</span>, <span class="string">'0.0.0.0'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; <span class="comment">// listen on port 8080, on all interfaces</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'App running on http://0.0.0.0:8080'</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>To run this locally, execute:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mkdir http-test-server</span><br><span class="line"><span class="built_in">cd</span> http-test-server</span><br><span class="line">npm init <span class="comment"># use all defaults</span></span><br><span class="line">nvim index.js <span class="comment"># or vim/nano or any GUI editor</span></span><br><span class="line"><span class="comment"># paste the above script and save</span></span><br><span class="line">node index.js</span><br><span class="line"><span class="comment"># Should print: App running on http://0.0.0.0:8080</span></span><br></pre></td></tr></table></figure>
+
+<p>Now, navigate to <code>http://0.0.0.0:8080/hi</code> or <code>http://localhost:8080/hi</code> in your browser.<br>You should see something like this:</p>
+<p><img src="/images/HTTP-Distilled/browser-response.png" alt="Browser Response"></p>
+<p>Using <code>F12</code> on your keyboard, you can open up the developer tools of your browser.<br>Then navigate to the <strong>Network</strong> tab. Then refresh the page using <code>F5</code>.<br>You should see the generated <strong>Request</strong> and upon clicking it, its <strong>Response</strong>:</p>
+<div style="position: relative; height: 520px; width: 100vw; text-align: center">
+    <img style="position: absolute; z-index: 999; width: 70%; top: 0; left: -15%" src="/images/HTTP-Distilled/browser-dev-tools.png" />
+</div>
+
+
+<h2 id="Example-Inspecting-HTTP-using-Wireshark"><a href="#Example-Inspecting-HTTP-using-Wireshark" class="headerlink" title="Example: Inspecting HTTP using Wireshark"></a>Example: Inspecting HTTP using Wireshark</h2><p>With the previous app started, we can trace the communication between the browser and the server using <strong>Wireshark</strong>.<br>Once you start Wireshark, listen on the <strong>Loopback: lo</strong> interface, and access <code>http://localhost:8080/hi</code> on your browser.<br><strong>NOTE</strong>: If you have permission issues, run Wireshark as <strong>root</strong>.</p>
+<p>Once you get the response, in Wireshark, in the <strong>filter</strong> input, write: <code>tcp.port == 8080</code> to remove all other packets.<br>You should get something like this:</p>
+<div style="position: relative; height: 750px; width: 100vw; text-align: center">
+    <img style="position: absolute; z-index: 999; width: 70%; top: 0; left: -15%" src="/images/HTTP-Distilled/wireshark.png" />
+</div>
+
+<p>It shows the following (order by column No.):</p>
+<ol>
+<li><strong>[SYN]</strong> Initiation of a TCP connection from the <strong>Browser (port 55448)</strong>, to the <strong>Server (port 8080)</strong></li>
+<li><strong>[SYN, ACK]</strong> Server accepts the connection, and initiates a connection to the Client</li>
+<li><strong>[ACK]</strong> The Client accepts the Server connection<br>(Now we have a full-duplex connection with the server)</li>
+<li><strong>[HTTP GET]</strong> The Client sends the <strong>HTTP Request</strong><br>(you can see the full request on the screenshot)</li>
+<li><strong>[ACK]</strong> The Server-side TCP accepts this segment<br>(After this, the server processes the request)</li>
+<li><strong>[HTTP 200 OK]</strong> Once processed, the Server returns an <strong>HTTP Response</strong></li>
+<li><strong>[ACK]</strong> The Client-side TCP accepts this segment<br>(After this, the browser gets the response, and renders the view)</li>
+<li><strong>[FIN, ACK]</strong> The Client closes the TCP connection for sending<br>(in direction Client-&gt;Server)</li>
+<li><strong>[FIN, ACK]</strong> The Server accepts this closing, and the Server closes the connection for sending<br>(in direction Server-&gt;Client)</li>
+<li><strong>[ACK]</strong> The Client accepts this closing</li>
+</ol>
+<p>Of particular importance are No. 4 and 6. This is where the HTTP Request (no. 4) and the HTTP Response (no. 6) are sent using TCP.</p>
+<hr>
+<h2 id="TL-DR"><a href="#TL-DR" class="headerlink" title="TL;DR"></a>TL;DR</h2><p><strong>Clients</strong> (usually Browsers) send <strong>HTTP Requests</strong> specifying the action (<strong>method</strong>), the <strong>resource</strong> (possibly with <strong>query string</strong> and <strong>fragment</strong>) and other metadata (<strong>Headers</strong>) to the <strong>Server</strong>. The <strong>Server</strong> parses this and computes a result, which gets stored in an <strong>HTTP Response</strong> containing a <strong>status code</strong>, <strong>headers</strong> and <strong>body</strong> that is sent back to the <strong>Client</strong>. <strong>Header</strong> metadata is used to better understand each other.</p>
+<h2 id="Resources"><a href="#Resources" class="headerlink" title="Resources"></a>Resources</h2><p>If you want to get more in-depth, visit these links:</p>
+<ul>
+<li><a href="https://tools.ietf.org/html/rfc2616" target="_blank" rel="noopener">RFC 2616 - HyperText Transfer Protocol</a> (The RFC for HTTP/1.1)</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP" target="_blank" rel="noopener">HTTP | Mozilla Developer Network</a> (MDN has lots of resources)</li>
+<li><a href="http://shop.oreilly.com/product/9781565925090.do" target="_blank" rel="noopener">HTTP: The Definitive Guide</a> (Highly recommended book)</li>
+</ul>
+<hr>
+<p><strong>That’s all! :)</strong><br>I’d love to hear from you. Feel free to drop a comment, or contact me via email.</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Basics"><span class="toc-number">1.</span> <span class="toc-text">Basics</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-Request"><span class="toc-number">2.</span> <span class="toc-text">HTTP Request</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Verbs-Methods"><span class="toc-number">2.1.</span> <span class="toc-text">Verbs &#x2F; Methods</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Resource"><span class="toc-number">2.2.</span> <span class="toc-text">Resource</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Query-String"><span class="toc-number">2.3.</span> <span class="toc-text">Query String</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Fragment"><span class="toc-number">2.4.</span> <span class="toc-text">Fragment</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Headers"><span class="toc-number">2.5.</span> <span class="toc-text">Headers</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Body"><span class="toc-number">2.6.</span> <span class="toc-text">Body</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#HTTP-Response"><span class="toc-number">3.</span> <span class="toc-text">HTTP Response</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Status-Codes"><span class="toc-number">3.1.</span> <span class="toc-text">Status Codes</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Using-cURL"><span class="toc-number">4.</span> <span class="toc-text">Example: Using cURL</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Using-Telnet"><span class="toc-number">5.</span> <span class="toc-text">Example: Using Telnet</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Inspecting-HTTP-using-DevTools"><span class="toc-number">6.</span> <span class="toc-text">Example: Inspecting HTTP using DevTools</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Example-Inspecting-HTTP-using-Wireshark"><span class="toc-number">7.</span> <span class="toc-text">Example: Inspecting HTTP using Wireshark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TL-DR"><span class="toc-number">8.</span> <span class="toc-text">TL;DR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Resources"><span class="toc-number">9.</span> <span class="toc-text">Resources</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://snajdov.me/posts/HTTP-Distilled/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://snajdov.me/posts/HTTP-Distilled/&text=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://snajdov.me/posts/HTTP-Distilled/&is_video=false&description=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=HTTP Distilled&body=Check out this article: https://snajdov.me/posts/HTTP-Distilled/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://snajdov.me/posts/HTTP-Distilled/&title=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://snajdov.me/posts/HTTP-Distilled/&name=HTTP Distilled&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://snajdov.me/posts/HTTP-Distilled/&t=HTTP Distilled" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Sasho Najdov
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="/projects_url">Projects</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'snajdov-me';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
