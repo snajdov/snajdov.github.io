@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://snajdov.me/images/HTTP-Distilled/browser-dev-tools.png">
 <meta property="og:image" content="https://snajdov.me/images/HTTP-Distilled/wireshark.png">
 <meta property="article:published_time" content="2020-04-14T20:21:51.000Z">
-<meta property="article:modified_time" content="2020-11-12T21:57:53.823Z">
+<meta property="article:modified_time" content="2020-11-12T22:08:21.243Z">
 <meta property="article:author" content="Sasho Najdov">
 <meta property="article:tag" content="client">
 <meta property="article:tag" content="server">
@@ -136,7 +136,7 @@
       
         <time datetime="2020-04-14T20:21:51.000Z" itemprop="datePublished">2020-04-14</time>
         
-        (Updated: <time datetime="2020-11-12T21:57:53.823Z" itemprop="dateModified">2020-11-12</time>)
+        (Updated: <time datetime="2020-11-12T22:08:21.243Z" itemprop="dateModified">2020-11-12</time>)
         
       
     </div>
@@ -321,21 +321,21 @@
 <p>Now, navigate to <code>http://0.0.0.0:8080/hi</code> or <code>http://localhost:8080/hi</code> in your browser.<br>You should see something like this:</p>
 <p><img src="/images/HTTP-Distilled/browser-response.png" alt="Browser Response"></p>
 <p>Using <code>F12</code> on your keyboard, you can open up the developer tools of your browser.<br>Then navigate to the <strong>Network</strong> tab. Then refresh the page using <code>F5</code>.<br>You should see the generated <strong>Request</strong> and upon clicking it, its <strong>Response</strong>:</p>
-<div style="position: relative; height: 520px; width: 100vw; text-align: center">
-    <img style="position: absolute; z-index: 999; width: 70%; top: 0; left: -15%" src="/images/HTTP-Distilled/browser-dev-tools.png" />
+<div style="position: relative; height: 520px; width: 70vw; left: -40%; text-align: center">
+    <img style="position: absolute; z-index: 999; width: 100%; top: 0; " src="/images/HTTP-Distilled/browser-dev-tools.png" />
 </div>
 
 
 <h2 id="Example-Inspecting-HTTP-using-Wireshark"><a href="#Example-Inspecting-HTTP-using-Wireshark" class="headerlink" title="Example: Inspecting HTTP using Wireshark"></a>Example: Inspecting HTTP using Wireshark</h2><p>With the previous app started, we can trace the communication between the browser and the server using <strong>Wireshark</strong>.<br>Once you start Wireshark, listen on the <strong>Loopback: lo</strong> interface, and access <code>http://localhost:8080/hi</code> on your browser.<br><strong>NOTE</strong>: If you have permission issues, run Wireshark as <strong>root</strong>.</p>
 <p>Once you get the response, in Wireshark, in the <strong>filter</strong> input, write: <code>tcp.port == 8080</code> to remove all other packets.<br>You should get something like this:</p>
-<div style="position: relative; height: 750px; width: 100vw; text-align: center">
-    <img style="position: absolute; z-index: 999; width: 70%; top: 0; left: -15%" src="/images/HTTP-Distilled/wireshark.png" />
+<div style="position: relative; height: 750px; width: 70vw; left: -40%; text-align: center">
+    <img style="position: absolute; z-index: 999; width: 100%; top: 0; " src="/images/HTTP-Distilled/wireshark.png" />
 </div>
 
 <p>It shows the following (order by column No.):</p>
 <ol>
-<li><strong>[SYN]</strong> Initiation of a TCP connection from the <strong>Browser (port 55448)</strong>, to the <strong>Server (port 8080)</strong></li>
-<li><strong>[SYN, ACK]</strong> Server accepts the connection, and initiates a connection to the Client</li>
+<li><strong>[SYN]</strong> Initiation of a TCP connection from the <strong>Browser (port 55448)</strong>, to the <strong>Server (port 8080)</strong><br>(in direction Client-&gt;Server)</li>
+<li><strong>[SYN, ACK]</strong> Server accepts the connection, and initiates a connection to the Client<br>(in direction Server-&gt;Client)</li>
 <li><strong>[ACK]</strong> The Client accepts the Server connection<br>(Now we have a full-duplex connection with the server)</li>
 <li><strong>[HTTP GET]</strong> The Client sends the <strong>HTTP Request</strong><br>(you can see the full request on the screenshot)</li>
 <li><strong>[ACK]</strong> The Server-side TCP accepts this segment<br>(After this, the server processes the request)</li>
