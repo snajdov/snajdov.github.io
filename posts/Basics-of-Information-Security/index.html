@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="When talking about information security, people usually think about two things: cryptography, and hacking. Although, this is not far from the truth, it is not exactly the same. Let me explain. Introdu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Basics of Information Security">
+<meta property="og:url" content="https://snajdov.me/posts/Basics-of-Information-Security/index.html">
+<meta property="og:site_name" content="snajdov.me">
+<meta property="og:description" content="When talking about information security, people usually think about two things: cryptography, and hacking. Although, this is not far from the truth, it is not exactly the same. Let me explain. Introdu">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-04-15T23:13:15.000Z">
+<meta property="article:modified_time" content="2020-11-16T19:08:03.785Z">
+<meta property="article:author" content="Sasho Najdov">
+<meta property="article:tag" content="information">
+<meta property="article:tag" content="security">
+<meta property="article:tag" content="confidentiality">
+<meta property="article:tag" content="integrity">
+<meta property="article:tag" content="authenticity">
+<meta property="article:tag" content="encryption">
+<meta property="article:tag" content="decryption">
+<meta property="article:tag" content="mac">
+<meta name="twitter:card" content="summary">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>Basics of Information Security</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+      
+<link rel="stylesheet" href="/css/rtl.css">
+
+    
+    <!-- rss -->
+    
+    
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about-me/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/snajdov" target="_blank" rel="noopener">Projects</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+         
+          <li><a href="/work/">work</a></li>
+        
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/posts/HTTP-Distilled/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Previous post</span>
+      <span id="i-next" class="info" style="display:none;">Next post</span>
+      <span id="i-top" class="info" style="display:none;">Back to top</span>
+      <span id="i-share" class="info" style="display:none;">Share post</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://snajdov.me/posts/Basics-of-Information-Security/" target="_blank" rel="noopener"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://snajdov.me/posts/Basics-of-Information-Security/&text=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://snajdov.me/posts/Basics-of-Information-Security/&is_video=false&description=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Basics of Information Security&body=Check out this article: https://snajdov.me/posts/Basics-of-Information-Security/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://snajdov.me/posts/Basics-of-Information-Security/&name=Basics of Information Security&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://snajdov.me/posts/Basics-of-Information-Security/&t=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Confidentiality-Through-Cryptography"><span class="toc-number">2.</span> <span class="toc-text">Confidentiality Through Cryptography</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Basics of Information Security
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">snajdov.me</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2020-04-15T23:13:15.000Z" itemprop="datePublished">2020-04-16</time>
+        
+        (Updated: <time datetime="2020-11-16T19:08:03.785Z" itemprop="dateModified">2020-11-16</time>)
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/security/">security</a> › <a class="category-link" href="/categories/security/cryptography/">cryptography</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link" href="/tags/authenticity/" rel="tag">authenticity</a>, <a class="tag-link" href="/tags/confidentiality/" rel="tag">confidentiality</a>, <a class="tag-link" href="/tags/decryption/" rel="tag">decryption</a>, <a class="tag-link" href="/tags/encryption/" rel="tag">encryption</a>, <a class="tag-link" href="/tags/information/" rel="tag">information</a>, <a class="tag-link" href="/tags/integrity/" rel="tag">integrity</a>, <a class="tag-link" href="/tags/mac/" rel="tag">mac</a>, <a class="tag-link" href="/tags/security/" rel="tag">security</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>When talking about information security, people usually think about two things: cryptography, and hacking.</p>
+<p>Although, this is not far from the truth, it is not exactly the same. Let me explain.</p>
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>First, let’s make a few things clear:</p>
+<ul>
+<li>What is “data”, and what is “information”?</li>
+<li>Do they differ? How?</li>
+</ul>
+<p>It’s key to understand these fundamental concepts, because they can make understanding the later concepts easier.</p>
+<p>OK, so, first “data”. What is data?<br>In computing terms, we can say that data is:</p>
+<blockquote>
+<p><strong>Any sequence of 1s and 0s.</strong><br><strong>ANY.</strong><br><strong>It doesn’t matter the order, the frequency or anything.</strong><br><strong>If you have bits, you have data.</strong></p>
+</blockquote>
+<p>Alright, what about “information”?<br>Let’s think about this: “INFOrmation”. Information means:</p>
+<blockquote>
+<p><strong>Extracting some knowledge from the data.</strong><br><strong>It’s understanding the data.</strong></p>
+</blockquote>
+<p><strong>This is important!</strong><br>We can have data, but unless we understand it, it meaningless, i.e. we don’t get any information.</p>
+<p>Right. So, with this new reasoning about information:<br><strong>What is “Information Security”?</strong></p>
+<p>Obviously, securing information, but now we can say:<br>Securing the <strong>understanding</strong> of data. Securing the <strong>knowledge</strong> in the data.<br>Note the “understanding” part. We don’t secure the data, we secure the “understanding of data”.</p>
+<p>OK, what is there to secure about the “understanding” of data?<br>There are generally 3 key properties of any Information, collectively called CIA (no, not that CIA):<br>(1) <strong>C</strong>onfidentiality,<br>(2) <strong>I</strong>ntegrity, and<br>(3) <strong>A</strong>vailability</p>
+<p><strong>(1)</strong> The first, is the most popular one: <strong>Confidentiality</strong>, it means:</p>
+<blockquote>
+<p><strong>The INABILITY of someone to extract the INFORMATION from the DATA, WHILE IN TRANSIT FROM SENDER TO RECEIVER, if the data was NOT meant for him/her.</strong></p>
+</blockquote>
+<p>Let’s think about this. A third party (some intruder) CAN HAVE THE DATA, but CAN NOT HAVE THE INFORMATION.<br>That is why it’s important to differentiate these two things.<br>Note that, <strong>Confidentiality</strong> also entails that the corresponding party (the receiver) is <strong>ABLE TO EXTRACT THE INFORMATION FROM THE DATA</strong>.<br>But, ideally, <strong>ONLY</strong> him/her.</p>
+<p><strong>(2)</strong> OK. Next we have <strong>Integrity</strong>. In this context it means:</p>
+<blockquote>
+<p><strong>Ensuring that the INFORMATION HAS NOT CHANGED WHILE IN TRANSIT FROM SENDER TO RECEIVER.</strong><br><strong>NOT ONE BIT.</strong></p>
+</blockquote>
+<p>Note that, this property <strong>DOES NOT</strong> mean the information is <strong>confidential</strong>.<br>Its <strong>ONLY</strong> job is to secure the <strong>IMMUTABILITY</strong> of information.</p>
+<p><strong>(3)</strong> Finally, <strong>Availability</strong> is:</p>
+<blockquote>
+<p><strong>The ability to ACCESS information ANYTIME from ANYWHERE.</strong></p>
+</blockquote>
+<p>This one is a little bit odd, because usually security is involved with denying access.<br>But, look at it this way, it’s:</p>
+<blockquote>
+<p><strong>Ensuring the ACCESS of information to the PERMITTED USERS, despite the CONSTANT ATTACKS TRYING TO DENY IT.</strong></p>
+</blockquote>
+<p>You see, breaking security isn’t all about hacking into the system.<br>Denying a service by a DDoS is also a SECURITY RISK.</p>
+<p>Usually people confuse these, and mix them up. So I’ll put it in quotes just so it’ll stick better:</p>
+<blockquote>
+<p>These concepts are INDIVIDUAL.<br>If you want ALL, you need to PROVIDE ALL, through different mechanisms.</p>
+</blockquote>
+<p>We DO NOT ALWAYS need ALL of them, or maybe not to the absolute degree.<br>We’ll see later on how we can combine them to achieve different things.</p>
+<p>So, these are the <strong>PROPERTIES</strong> of <strong>Information</strong>.<br>Now we’ll see the <strong>MECHANISMS</strong> used to ENSURE THEM.</p>
+<p>Following is a short table showing the mechanism for each property:</p>
+<table>
+<thead>
+<tr>
+<th align="right">Property</th>
+<th>Mechanism</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="right">Confidentiality</td>
+<td>Cryptography</td>
+</tr>
+<tr>
+<td align="right">Integrity</td>
+<td>Message Authentication Codes (MAC)</td>
+</tr>
+<tr>
+<td align="right">Availability</td>
+<td>Replication/and more…</td>
+</tr>
+</tbody></table>
+<p>Each mechanism is described in the following subsections.</p>
+<h2 id="Confidentiality-Through-Cryptography"><a href="#Confidentiality-Through-Cryptography" class="headerlink" title="Confidentiality Through Cryptography"></a>Confidentiality Through Cryptography</h2><p>How do we achieve <strong>Confidentiality</strong>? Using <strong>Cryptography</strong>.<br>OK, let’s think about this too. <strong>Cryptography</strong> allows us to fullfill the <strong>Confidentiality</strong> property of an <strong>Information</strong>.<br>With that <strong>Cryptography</strong> is just one subpart of <strong>Information Security</strong>.<br>We’ll talk A LOT about cryptography, but remember that it <strong>ONLY SOLVES CONFIDENTIALITY</strong>.<br>Nothing else.</p>
+<p>Now, cryptography is a large topic for discussion, too large for this post, but we’ll cover the basic concepts.<br>Although cryptography is quite older than computers, we’ll talk in terms of its usage in computers.</p>
+<p>Also, before we delve into the concrete specifics, we should mention the following terms:</p>
+<ul>
+<li><strong>PLAIN TEXT</strong>: information readable by anyone (anyone has the DATA + INFORMATION)</li>
+<li><strong>CIPHER TEXT</strong>: information readable only by the one with the decryption key (anyone has the garbled up DATA, but ONLY WITH THE KEY we have INFORMATION)</li>
+<li><strong>ENCRYPTION</strong>: the transformation of PLAIN TEXT, to CIPHER TEXT</li>
+<li><strong>DECRYPTION</strong>: the transformation of CIPHER TEXT, to PLAIN TEXT</li>
+<li><strong>KEY</strong>: a shared secret between the sender and receiver (usually a random HUGE number, like 2^256 huge, or more)</li>
+<li><strong>CIPHER</strong>: the algorithm used to ENCRYPT/DECRYPT the data</li>
+<li><strong>MODE</strong>: the encryption mode used to CHAIN different BLOCKS in the ENCRYPTION/DECRYPTION</li>
+<li><strong>BLOCK</strong>: a block/range of the data to be ENCRYPTED/DECRYPTED</li>
+</ul>
+<p>Using these, we can categorize cryptography whether it uses blocks:<br><strong>BLOCK vs STREAM CIPHERS</strong><br>and whether it uses one or more keys:<br><strong>SYMETRIC VS ASYMETRIC</strong></p>
+<p>The usual workflow is this:<br>(1) We have some PLAIN TEXT that we want to send to someone<br>(2) Using the KEY, we ENCRYPT the PLAIN TEXT and get the CIPHER TEXT<br>(3) We send the CIPHER TEXT through the channel<br>(4) The receiver and all other listening get the CIPHER TEXT<br>(5) ONLY the receiver can DECRYPT it using the KEY to get the PLAIN TEXT</p>
+<p>A couple of things to consider:</p>
+<ul>
+<li>Is the ENCRYPTION secure?</li>
+<li>Do we use the SAME KEY for DECRYPTION?</li>
+<li>How do we send the KEY to the receiver without anyone else getting it?</li>
+</ul>
+<p>Let’s discuss these one by one.</p>
+<p>Is the ENCRYPTION secure? (in the following text, we I say Encryption, by default assume Decryption as well)<br>There is no easy answer. Testing whether the encryption is secure is no easy task.<br>It’s best if we can mathematically express its randomness.<br>But first, let’s decompose ENCRYPTION:</p>
+<p>ENCRYPTION has two parts:</p>
+<ul>
+<li>CIPHER: the ALGORITHM used to ENCRYPT the PLAIN TEXT</li>
+<li>MODE: (if it’s a BLOCK CIPHER) the way we CHAIN BLOCKS when ENCRYPTING/DECRYPTING</li>
+</ul>
+<p>Desirable properties of ENCRYPTION<br>// TODO</p>
+
+  </div>
+</article>
+
+    <div class="blog-post-comments">
+        <div id="disqus_thread">
+            <noscript>Please enable JavaScript to view the comments.</noscript>
+        </div>
+    </div>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about-me/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/snajdov" target="_blank" rel="noopener">Projects</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+         
+          <li><a href="/work/">work</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Confidentiality-Through-Cryptography"><span class="toc-number">2.</span> <span class="toc-text">Confidentiality Through Cryptography</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://snajdov.me/posts/Basics-of-Information-Security/" target="_blank" rel="noopener"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://snajdov.me/posts/Basics-of-Information-Security/&text=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://snajdov.me/posts/Basics-of-Information-Security/&is_video=false&description=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Basics of Information Security&body=Check out this article: https://snajdov.me/posts/Basics-of-Information-Security/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://snajdov.me/posts/Basics-of-Information-Security/&title=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://snajdov.me/posts/Basics-of-Information-Security/&name=Basics of Information Security&description=" target="_blank" rel="noopener"><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://news.ycombinator.com/submitlink?u=https://snajdov.me/posts/Basics-of-Information-Security/&t=Basics of Information Security" target="_blank" rel="noopener"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Share</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Top</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy;
+    
+    
+    2020
+    Sasho Najdov
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">Home</a></li>
+         
+          <li><a href="/about-me/">About</a></li>
+         
+          <li><a href="/archives/">Writing</a></li>
+         
+          <li><a href="https://github.com/snajdov" target="_blank" rel="noopener">Projects</a></li>
+         
+          <li><a href="/categories/">categories</a></li>
+         
+          <li><a href="/search/">Search</a></li>
+         
+          <li><a href="/tags/">tags</a></li>
+         
+          <li><a href="/work/">work</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+
+    <!-- jquery -->
+
+<script src="/lib/jquery/jquery.min.js"></script>
+
+
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+
+<!-- clipboard -->
+
+  
+<script src="/lib/clipboard/clipboard.min.js"></script>
+
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+    <script type="text/javascript">
+        var disqus_shortname = 'snajdov-me';
+
+        (function(){
+            var dsq = document.createElement('script');
+            dsq.type = 'text/javascript';
+            dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        }());
+    </script>
+
+
+</body>
+</html>
