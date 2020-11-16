@@ -439,6 +439,21 @@ body td {
   font-family: "Meslo LG";
   src: local("Meslo LG S"), url("../lib/meslo-LG/MesloLGS-Regular.ttf") format("truetype");
 }
+@font-face {
+  font-style: bold;
+  font-family: "Meslo LG Bold";
+  src: local("Meslo LG S"), url("../lib/meslo-LG/MesloLGS-Bold.ttf") format("truetype");
+}
+@font-face {
+  font-style: normal;
+  font-family: "Source Code Pro";
+  src: local("Source Code Pro"), url("../lib/scp/SourceCodePro-Regular.otf") format("truetype");
+}
+@font-face {
+  font-style: bold;
+  font-family: "Source Code Pro Bold";
+  src: local("Source Code Pro Bold"), url("../lib/scp/SourceCodePro-Bold.otf") format("truetype");
+}
 *,
 *:before,
 *:after {
@@ -460,7 +475,7 @@ body {
   font-display: swap;
   font-weight: 400;
   font-size: 14px;
-  font-family: "Menlo", "Meslo LG", monospace;
+  font-family: "Source Code Pro", "Menlo", "Meslo LG", monospace;
   line-height: 1.725;
   text-rendering: geometricPrecision;
   flex: 1;
@@ -1386,7 +1401,7 @@ article .content .caption {
   font-display: swap;
   font-weight: 400;
   font-size: 11.200000000000001px;
-  font-family: "Menlo", "Meslo LG", monospace;
+  font-family: "Source Code Pro", "Menlo", "Meslo LG", monospace;
   line-height: 1.725;
   text-rendering: geometricPrecision;
   text-align: center;
@@ -1487,51 +1502,48 @@ article .content .caption {
   content: ")";
 }
 .highlight {
-  display: block;
-  overflow-x: auto;
-  padding: 0.5em;
-  background: #fff;
-  color: #000;
+  color: #84613d;
+  background: #fbebd4;
 }
 .highlight .code .comment,
-.highlight .code .quote,
-.highlight .code .variable {
-  color: #008000;
+.highlight .code .quote {
+  color: #a57a4c;
+}
+.highlight .code .variable,
+.highlight .code .template-variable,
+.highlight .code .tag,
+.highlight .code .name,
+.highlight .code .selector-id,
+.highlight .code .selector-class,
+.highlight .code .regexp,
+.highlight .code .meta {
+  color: #dc3958;
+}
+.highlight .code .number,
+.highlight .code .built_in,
+.highlight .code .builtin-name,
+.highlight .code .literal,
+.highlight .code .type,
+.highlight .code .params,
+.highlight .code .deletion,
+.highlight .code .link {
+  color: #f79a32;
+}
+.highlight .code .title,
+.highlight .code .section,
+.highlight .code .attribute {
+  color: #f06431;
+}
+.highlight .code .string,
+.highlight .code .symbol,
+.highlight .code .bullet,
+.highlight .code .addition {
+  color: #889b4a;
 }
 .highlight .code .keyword,
 .highlight .code .selector-tag,
-.highlight .code .built_in,
-.highlight .code .name,
-.highlight .code .tag {
-  color: #00f;
-}
-.highlight .code .string,
-.highlight .code .title,
-.highlight .code .section,
-.highlight .code .attribute,
-.highlight .code .literal,
-.highlight .code .template-tag,
-.highlight .code .template-variable,
-.highlight .code .type,
-.highlight .code .addition {
-  color: #a31515;
-}
-.highlight .code .deletion,
-.highlight .code .selector-attr,
-.highlight .code .selector-pseudo,
-.highlight .code .meta {
-  color: #2b91af;
-}
-.highlight .code .doctag {
-  color: #808080;
-}
-.highlight .code .attr {
-  color: #f00;
-}
-.highlight .code .symbol,
-.highlight .code .bullet,
-.highlight .code .link {
-  color: #00b0e8;
+.highlight .code .function {
+  color: #98676a;
 }
 .highlight .code .emphasis {
   font-style: italic;
@@ -1624,4 +1636,16 @@ code {
 }
 .highlight .line {
   height: 22px;
+}
+strong {
+  font-family: "Meslo LG Bold", "Source Code Pro Bold";
+}
+#nav {
+  font-family: "Source Code Pro Bold";
+}
+.meta {
+  font-family: "Source Code Pro";
+}
+a {
+  font-family: "Source Code Pro Bold";
 }
