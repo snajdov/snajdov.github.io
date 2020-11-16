@@ -1101,12 +1101,28 @@ article header .postdate {
 }
 article .content h2:before {
   position: absolute;
-  top: -4px;
-  left: -1rem;
+  top: -3px;
+  left: -1.1rem;
   color: #2bbc8a;
   content: "#";
   font-weight: bold;
   font-size: 1.2rem;
+}
+article .content h3 {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: bold;
+  font-family: "Source Code Pro Bold";
+}
+article .content h3:before {
+  position: absolute;
+  top: -6px;
+  left: -1.1rem;
+  color: #2bbc8a;
+  content: "*";
+  font-size: 1.3rem;
 }
 article .content img,
 article .content video {
@@ -1212,10 +1228,6 @@ article .content .caption {
   .article-tag,
   .article-category {
     display: inline;
-  }
-  .article-tag:before,
-  .article-category:before {
-    content: "|";
   }
 }
 #archive .post-list {
